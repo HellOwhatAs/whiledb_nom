@@ -75,7 +75,9 @@ dependencies = [
 
 [[package]]
 name = "nom_learn"
-version = "0.1.0"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "03d1dc6585a03c5b76f92a32edaf9607cbc562a8c09020ba240defe317e0b993"
 dependencies = [
  "nom",
  "text_io",
