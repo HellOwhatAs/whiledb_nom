@@ -1,0 +1,3 @@
+[submodule "nom_learn"]
+	path = nom_learn
+	url = https://github.com/HellOwhatAs/nom_learn.git
