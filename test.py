@@ -1,19 +1,38 @@
 import whiledb_nom
+from concurrent.futures import ThreadPoolExecutor
+import time
 
-state = whiledb_nom.exec(
-"""
-arr = malloc(100);
-idx = 0;
-while idx < 100 {
-    *(arr + idx) = idx;
-    idx = idx + 1;
-}
-""")
 
-print(state)
+start = time.time()
 
-print(whiledb_nom.eval("malloc(100)", *state))
-print(whiledb_nom.eval("free(arr)", *state))
-print(whiledb_nom.eval("malloc(10)", *state))
+executor = ThreadPoolExecutor()
+map(lambda x: x.result(), [
+    executor.submit(
+        whiledb_nom.exec,
+        """
+        i = 0;
+        while i < 300 {
+            acc = 0; idx = 0;
+            while idx < 10000 {
+                acc = acc + idx ^ 3;
+                idx = idx + 1; 
+            }
+            i = i + 1;
+        }
+        """
+    ) for _ in range(10)
+])
+print(time.time() - start)
 
-print(state)
+
+start = time.time()
+
+i = 0
+while i < 3000:
+    acc, idx = 0, 0
+    while idx < 10000:
+        acc = acc + idx ** 3
+        idx = idx + 1
+    i = i + 1
+
+print(time.time() - start)
